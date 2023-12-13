@@ -1,3 +1,3 @@
-module github.com/hugo-toha/toha/v4
+module github.com/dietervansteenwegen/toha_theme/v4
 
 go 1.19
