@@ -2,9 +2,14 @@ a {
   color: get-light-color('accent-color');
   @include transition();
 
+  &:link {
+    text-decoration: none;
+  }
+
   &:hover,
   &:focus {
-    text-decoration: get-light-color('hover-over-accent-color') underline;
+    -webkit-text-decoration: get-light-color('hover-over-accent-color') underline;
+            text-decoration: get-light-color('hover-over-accent-color') underline;
     color: get-light-color('hover-over-accent-color');
     @include transition();
   }
@@ -62,7 +67,8 @@ html[data-theme='dark'] {
 
     &:hover,
     &:focus {
-      text-decoration: get-dark-color('hover-over-accent-color') underline;
+      -webkit-text-decoration: get-dark-color('hover-over-accent-color') underline;
+              text-decoration: get-dark-color('hover-over-accent-color') underline;
       color: get-dark-color('hover-over-accent-color');
     }
   }

@@ -1,4 +1,10 @@
-const PERSISTENCE_KEY = 'darkmode:color-scheme'
+import * as params from '@params';
+const PERSISTENCE_KEY = 'theme-scheme'
+
+const themeOptions = params.theme || {}
+const THEME_DARK = typeof themeOptions.dark === 'undefined' ? true : themeOptions.dark;
+const THEME_LIGHT = typeof themeOptions.light === 'undefined' ? true : themeOptions.light;
+const THEME_DEFAULT = typeof themeOptions.default === 'undefined' ? "system" : themeOptions.default;
 
 window.addEventListener('load', async () => {
   const menu = document.getElementById('themeMenu')
@@ -13,8 +19,18 @@ window.addEventListener('load', async () => {
   }, {})
 
 
+  function checkScheme(scheme) {
+    if (THEME_LIGHT === false) return "dark"
+    if (THEME_DARK === false) return "light"
+    return scheme
+  }
+
   function loadScheme() {
-    return localStorage.getItem(PERSISTENCE_KEY) || "system"
+    return localStorage.getItem(PERSISTENCE_KEY) || loadDefaultScheme()
+  }
+
+  function loadDefaultScheme() {
+    return THEME_DEFAULT || "system"
   }
 
   function saveScheme(scheme) {
@@ -39,11 +55,12 @@ window.addEventListener('load', async () => {
 
     // save preference to local storage
     saveScheme(newScheme)
-
+  
     setImages(theme)
   }
 
-  setScheme(loadScheme())
+  const checkedScheme = checkScheme(loadScheme())
+  setScheme(checkedScheme)
 
   Array.from(menu.getElementsByTagName('a')).forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -58,6 +75,7 @@ function setImages(newScheme) {
   for (const el of els) {
     const light = el.querySelector('.light-logo');
     const dark = el.querySelector('.dark-logo');
+
     if (newScheme === "dark" && dark !== null) {
       if (light !== null) light.style.display = 'none'
       dark.style.display = 'inline'
